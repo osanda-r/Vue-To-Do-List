@@ -19,9 +19,9 @@
               rounded="lg"
               style="background: #fff"
             >
-              <v-toolbar color="sky blue" dark rounded="lg" flat>
+              <v-toolbar color="green" dark rounded="lg" flat>
                 <v-toolbar-title class="text-h5 font-weight-bold"
-                  >Todo List</v-toolbar-title
+                  >To-Do List</v-toolbar-title
                 >
               </v-toolbar>
               <v-card-text>
@@ -38,7 +38,7 @@
                   </v-col>
                   <v-col cols="4" class="d-flex align-center">
                     <v-btn
-                      color="success"
+                      color="light yellow"
                       @click="addTodo"
                       class="ml-2"
                       elevation="2"

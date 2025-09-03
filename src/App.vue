@@ -78,12 +78,9 @@
                 <!-- TO-DO Delete Confirmation -->
                 <v-dialog v-model="dialog" max-width="400">
                   <v-card>
-                    <v-card-title class="text-h6"
-                      >Confirm Deletion</v-card-title
-                    >
-                    <v-card-text>
-                      Are you sure you want to delete this to-do?
-                    </v-card-text>
+                    <v-card-title class="text-h7">
+                      Are you sure ?
+                    </v-card-title>
                     <v-card-actions>
                       <v-spacer />
                       <v-btn color="grey" text @click="dialog = false"
@@ -97,7 +94,12 @@
                 </v-dialog>
 
                 <!-- Toast Snackbar -->
-                <v-snackbar v-model="snackbar" color="success" timeout="2000">
+                <v-snackbar
+                  v-model="snackbar"
+                  color="success"
+                  timeout="2000"
+                  class="align-center"
+                >
                   To-do deleted!
                 </v-snackbar>
               </v-card-text>

@@ -118,7 +118,7 @@ const drawer = ref(null);
 const newTodo = ref("");
 const todos = ref([]);
 
-// For dialog and toast
+// dialog and toast message
 const dialog = ref(false);
 const snackbar = ref(false);
 const deleteIndex = ref(null);

@@ -51,13 +51,13 @@
                 <v-list class="mt-2" style="background: transparent">
                   <v-list-item
                     v-for="(todo, i) in todos"
-                    :key="i"
+                    :key="todo.id"
                     class="mb-2"
                     style="border-radius: 8px; background: #f0f4ff"
                   >
                     <v-list-item-content>
                       <v-list-item-title class="text-body-1">
-                        {{ todo }}
+                        {{ todo.text }}
                       </v-list-item-title>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -112,20 +112,54 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
-const drawer = ref(null);
+// Firebase config (replace with your own config)
+const firebaseConfig = {
+  apiKey: "AIzaSyCPENp31Fe4I4jTD1v1BDYphjE2KcCCUfM",
+  authDomain: "to-do-list-563b5.firebaseapp.com",
+  projectId: "to-do-list-563b5",
+  storageBucket: "to-do-list-563b5.appspot.com",
+  messagingSenderId: "564182145796",
+  appId: "1:564182145796:web:4f053e6b5824fe319c8e51"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const todosCollection = collection(db, "todos");
+
 const newTodo = ref("");
-const todos = ref([]);
-
-// dialog and toast message
+const todos = ref([]); // [{ id, text }]
 const dialog = ref(false);
 const snackbar = ref(false);
 const deleteIndex = ref(null);
 
-function addTodo() {
+// Load todos from Firestore
+async function loadTodos() {
+  const querySnapshot = await getDocs(todosCollection);
+  todos.value = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    text: doc.data().text,
+  }));
+}
+
+onMounted(loadTodos);
+
+async function addTodo() {
   if (newTodo.value.trim()) {
-    todos.value.push(newTodo.value.trim());
+    // Add to Firestore
+    await addDoc(todosCollection, {
+      text: newTodo.value.trim(),
+    });
+    await loadTodos(); // reload from Firestore for sync
     newTodo.value = "";
   }
 }
@@ -135,14 +169,22 @@ function confirmDelete(index) {
   dialog.value = true;
 }
 
-function deleteTodo() {
+async function deleteTodo() {
   if (deleteIndex.value !== null) {
-    todos.value.splice(deleteIndex.value, 1);
+    const todo = todos.value[deleteIndex.value];
+    if (todo && todo.id) {
+      await deleteDoc(doc(todosCollection, todo.id));
+      await loadTodos(); // reload from Firestore for sync
+    }
     snackbar.value = true;
     deleteIndex.value = null;
   }
   dialog.value = false;
 }
+</script>
+  
+  dialog.value = false;
+
 </script>
 
 <script>

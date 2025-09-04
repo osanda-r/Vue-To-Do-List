@@ -123,7 +123,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-// Firebase config (replace with your own config)
+// Firebase config 
 const firebaseConfig = {
   apiKey: "AIzaSyCPENp31Fe4I4jTD1v1BDYphjE2KcCCUfM",
   authDomain: "to-do-list-563b5.firebaseapp.com",
@@ -137,7 +137,7 @@ const db = getFirestore(app);
 const todosCollection = collection(db, "todos");
 
 const newTodo = ref("");
-const todos = ref([]); // [{ id, text }]
+const todos = ref([]); 
 const dialog = ref(false);
 const snackbar = ref(false);
 const deleteIndex = ref(null);
@@ -159,7 +159,7 @@ async function addTodo() {
     await addDoc(todosCollection, {
       text: newTodo.value.trim(),
     });
-    await loadTodos(); // reload from Firestore for sync
+    await loadTodos(); 
     newTodo.value = "";
   }
 }
@@ -174,7 +174,7 @@ async function deleteTodo() {
     const todo = todos.value[deleteIndex.value];
     if (todo && todo.id) {
       await deleteDoc(doc(todosCollection, todo.id));
-      await loadTodos(); // reload from Firestore for sync
+      await loadTodos();
     }
     snackbar.value = true;
     deleteIndex.value = null;
